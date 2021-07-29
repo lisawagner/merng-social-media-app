@@ -5,13 +5,12 @@ const typeDefs = require("./graphql/typeDefs");
 const resolvers = require("./graphql/resolvers");
 const { MONGODB } = require("./config.js");
 
-// posts query typeDefs moved to graphql folder
-// resolvers moved
+// PubSub implementation changed with Apollo 3
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => ({ req }),
+  context: ({ req }) => ({ req, pubsub }),
 });
 
 mongoose
@@ -22,4 +21,7 @@ mongoose
   })
   .then((res) => {
     console.log(`Server running at ${res.url}`);
+  })
+  .catch((err) => {
+    console.error(err);
   });

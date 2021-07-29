@@ -47,4 +47,8 @@ module.exports = gql`
     deleteComment(postId: ID!, commentId: ID!): Post!
     likePost(postId: ID!): Post!
   }
+  # how to add a subscription - if you want to do polling etc
+  type Subscription {
+    newPost: Post!
+  }
 `;
