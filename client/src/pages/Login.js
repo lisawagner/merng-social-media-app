@@ -23,6 +23,7 @@ function Login(props) {
       props.history.push("/");
     },
     onError(err) {
+      // setErrors(err.graphQLErrors[0].extensions.errors);
       setErrors(err.graphQLErrors[0].extensions.errors);
     },
     variables: values,
@@ -42,7 +43,7 @@ function Login(props) {
           name="username"
           type="text"
           value={values.username}
-          error={errors.username ? true : false}
+          error={errors ? (errors.username ? true : false) : false}
           onChange={onChange}
         />
         <Form.Input
@@ -51,7 +52,7 @@ function Login(props) {
           name="password"
           type="password"
           value={values.password}
-          error={errors.password ? true : false}
+          error={errors ? (errors.password ? true : false) : false}
           onChange={onChange}
         />
         <Button type="submit" primary>
