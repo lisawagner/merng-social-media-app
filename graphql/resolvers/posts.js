@@ -32,9 +32,12 @@ module.exports = {
       console.log(user);
 
       // Server validation - post cannot be empty
-      if (args.body.trim === "") {
+      if (body.trim() === "") {
         throw new Error("Post body must not be empty");
       }
+      // if (args.body.trim === "") {
+      //   throw new Error("Post body must not be empty");
+      // }
 
       const newPost = new Post({
         body,
