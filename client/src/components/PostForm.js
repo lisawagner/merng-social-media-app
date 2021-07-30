@@ -39,20 +39,22 @@ function PostForm() {
             name="body"
             onChange={onChange}
             value={values.body}
-            // error={error ? true : false}
+            error={error ? true : false}
           />
           <Button type="submit" color="violet">
             Submit
           </Button>
         </Form.Field>
       </Form>
-      {/* {error && (
+      {error && (
         <div className="ui error message" style={{ marginBottom: 20 }}>
           <ul className="list">
             <li>{error.graphQLErrors[0].message}</li>
+            {/* <li>{error.graphQLErrors[0].message}</li> */}
+            {/* <li>{error.message}</li> */}
           </ul>
         </div>
-      )} */}
+      )}
     </>
   );
 }
