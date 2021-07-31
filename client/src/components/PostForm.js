@@ -46,6 +46,7 @@ function PostForm() {
           </Button>
         </Form.Field>
       </Form>
+
       {error && (
         <div className="ui error message" style={{ marginBottom: 20 }}>
           <ul className="list">

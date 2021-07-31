@@ -5,6 +5,14 @@ const checkAuth = require("../../util/check-auth");
 
 module.exports = {
   Query: {
+    // async getPosts() {
+    //   try {
+    //     const posts = await Post.find().sort({ createdAt: -1 });
+    //     return posts;
+    //   } catch (err) {
+    //     throw new Error(err);
+    //   }
+    // },
     getPosts: async () => {
       try {
         const posts = await Post.find().sort({ createdAt: -1 });
@@ -14,27 +22,43 @@ module.exports = {
       }
     },
 
+    // async getPost(_, { postId }) {
+    //   try {
+    //     const post = await Post.findById(postId);
+    //     if (post) {
+    //       return post;
+    //     } else {
+    //       throw new Error("Post not found");
+    //     }
+    //   } catch (err) {
+    //     throw new Error(err);
+    //   }
+    // },
     getPost: async (_, { postId }) => {
       try {
         const post = await Post.findById(postId);
         if (post) {
           return post;
         } else {
-          throw new Error("Post not find");
+          throw new Error("Post not found");
         }
       } catch (err) {
         throw new Error(err);
       }
     },
   },
-  Mutation: {
-    createPost: async (_, { body }, context) => {
-      if (body.trim() === "") {
-        // throw new UserInputError("Post body must bot be empty");
-        throw new Error("Posts cannot be empty");
-      }
 
+  Mutation: {
+    async createPost(_, { body }, context) {
       const user = checkAuth(context);
+
+      // Server validation - post cannot be empty
+      if (body.trim() === "") {
+        throw new Error("Post body must not be empty");
+      }
+      // if (args.body.trim === "") {
+      //   throw new Error("Post body must not be empty");
+      // }
 
       const newPost = new Post({
         body,
@@ -44,16 +68,15 @@ module.exports = {
       });
 
       const post = await newPost.save();
-      //   const post = newPost.save();
 
       return post;
     },
-    deletePost: async (_, { postId }, context) => {
+    async deletePost(_, { postId }, context) {
       const user = checkAuth(context);
 
       try {
         const post = await Post.findById(postId);
-        if (post.username === user.username) {
+        if (user.username === post.username) {
           await post.delete();
           return "Post deleted successfully";
         } else {
@@ -63,15 +86,15 @@ module.exports = {
         throw new Error(err);
       }
     },
-    likePost: async (_, { postId }, context) => {
+    async likePost(_, { postId }, context) {
       const { username } = checkAuth(context);
-      const post = await Post.findById(postId);
 
+      const post = await Post.findById(postId);
       if (post) {
         if (post.likes.find((like) => like.username === username)) {
           // Post already liked? unlike it.
           post.likes = post.likes.filter((like) => like.username !== username);
-          //   await post.save();
+          await post.save();
         } else {
           // Not like? Like post.
           post.likes.push({
@@ -79,12 +102,10 @@ module.exports = {
             createdAt: new Date().toISOString(),
           });
         }
+
         await post.save();
         return post;
-      } else {
-        //   throw new UserInputError("Post not found")
-        throw UserInputError("post not found");
-      }
+      } else throw new UserInputError("Post not found");
     },
   },
 };
