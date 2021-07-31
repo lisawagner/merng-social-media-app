@@ -11,6 +11,10 @@ import MenuBar from "./components/MenuBar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+// import SinglePost from "./pages/SinglePost";
+
+// --------------------------- Pause at 4:51--------------------------------------
+// ------------------------- Many errors with set up ------------------------------
 
 function App() {
   return (
@@ -18,10 +22,10 @@ function App() {
       <Router>
         <MenuBar />
         <Container>
-          {/* <h1>Hello Cherry Blossoms!</h1> */}
           <Route exact path="/" component={Home} />
           <AuthRoute exact path="/login" component={Login} />
           <AuthRoute exact path="/register" component={Register} />
+          {/* <Route exact path="/posts/:postsId" component={SinglePost} /> */}
         </Container>
       </Router>
     </AuthProvider>
